@@ -1,5 +1,5 @@
 # =====================================================================
-# BioGlow - CENTRAL WEB (Streamlit) - VERSÃO 6
+# BioGlow - CENTRAL WEB (Streamlit) - VERSÃO 6oi
 #
 # O que é: a Central do robô AquaSentry transformada em aplicativo web, com
 #   - contas de usuário (e-mail + senha), chave de ativação e limite de 3 computadores;
