@@ -1,8 +1,1 @@
-streamlit
-streamlit-image-coordinates
-numpy
-matplotlib
-pillow
-shapely
-scipy
-contourpy
+
