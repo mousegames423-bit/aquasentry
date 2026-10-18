@@ -1,0 +1,8 @@
+streamlit>=1.37
+streamlit-image-coordinates
+numpy
+matplotlib
+shapely>=2.0
+scipy
+pillow
+tzdata
