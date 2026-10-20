@@ -322,76 +322,48 @@ def obter_clique(png, chave):
 # ---------- Visual limpo e cores "Lago Cristalino" (Suporte a Modo Claro e Escuro) ----------
 # ---------- Visual Dinâmico: Modo Claro (Lago Claro) + Modo Escuro (Azul Marinho) ----------
 # ---------- Visual Blindado: Suporte Real a Modo Claro e Escuro ----------
+# ---------- Estilo Padrão Limpo (Mantém Fundos Nativos + Desenhos & Gotinha) ----------
+# ---------- Estilo Nativo (Sem cores forçadas + Desenhos & Gotinha) ----------
 ESTILO_TEMA = """<style>
-/* MODO CLARO (Lago Cristalino) */
-.stApp, [data-theme="light"] .stApp {
-  background-color: #E0F2FE !important;
-  color: #0F172A !important;
-}
+html, body { touch-action: manipulation; }
 
-[data-theme="light"] .stApp h1, [data-theme="light"] .stApp h2, [data-theme="light"] .stApp h3, 
-[data-theme="light"] .stApp h4, [data-theme="light"] .stApp p, [data-theme="light"] .stApp label, 
-[data-theme="light"] .stApp span, [data-theme="light"] div[data-testid="stMarkdownContainer"] {
-  color: #0F172A !important;
-}
-
-[data-theme="light"] div[data-testid="stExpander"], [data-theme="light"] div[data-testid="stMetric"], 
-[data-theme="light"] div[data-testid="stAlert"], [data-theme="light"] div[data-testid="stForm"], 
-[data-theme="light"] .glass, [data-theme="light"] .ind, [data-theme="light"] .alerta-udp {
-  background: rgba(255, 255, 255, 0.88) !important;
-  border: 1px solid rgba(14, 116, 144, 0.25) !important;
-  border-radius: 16px !important;
-  color: #0F172A !important;
-}
-
-[data-theme="light"] .stButton > button, [data-theme="light"] .stDownloadButton > button {
-  background: #FFFFFF !important;
-  color: #0F172A !important;
-  border: 1px solid rgba(14, 116, 144, 0.3) !important;
-}
-
-/* MODO ESCURO (Azul Marinho / Aqua Hydro) */
-[data-theme="dark"] .stApp {
-  background: linear-gradient(160deg, #071B33 0%, #0A2E52 55%, #0B4A6B 100%) fixed !important;
-  color: #E8F6FF !important;
-}
-
-[data-theme="dark"] .stApp h1, [data-theme="dark"] .stApp h2, [data-theme="dark"] .stApp h3, 
-[data-theme="dark"] .stApp h4, [data-theme="dark"] .stApp p, [data-theme="dark"] .stApp label, 
-[data-theme="dark"] .stApp span, [data-theme="dark"] div[data-testid="stMarkdownContainer"] {
-  color: #E8F6FF !important;
-}
-
-[data-theme="dark"] div[data-testid="stExpander"], [data-theme="dark"] div[data-testid="stMetric"], 
-[data-theme="dark"] div[data-testid="stAlert"], [data-theme="dark"] div[data-testid="stForm"], 
-[data-theme="dark"] .glass, [data-theme="dark"] .ind, [data-theme="dark"] .alerta-udp {
-  background: rgba(255, 255, 255, 0.07) !important;
-  border: 1px solid rgba(160, 225, 255, 0.22) !important;
-  border-radius: 16px !important;
-  color: #E8F6FF !important;
-}
-
-[data-theme="dark"] .stButton > button, [data-theme="dark"] .stDownloadButton > button {
-  background: rgba(255, 255, 255, 0.14) !important;
-  color: #E8F6FF !important;
-  border: 1px solid rgba(160, 225, 255, 0.22) !important;
-}
-
-/* BOTÃO PRINCIPAL (Destaque em ambos os modos) */
-.stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"] {
-  background: linear-gradient(135deg, #19C3D8, #3EE6D0) !important;
-  color: #05233D !important;
-  font-weight: bold !important;
-  border: none !important;
-}
-
-/* REGRA DE SEGURANÇA: REMOVE DEFINITIVAMENTE O TEXTO VAZADO NO TOPO */
+/* Esconde o widget nativo para eliminar o erro de texto bruto no topo */
 [data-testid="stStatusWidget"] {
   display: none !important;
 }
 
-/* ANIMAÇÃO CUSTOMIZADA DA GOTINHA EM LOOP */
-.carregando { display: flex; align-items: center; gap: .9rem; padding: .6rem 1rem; margin: .4rem 0; }
+/* Bordas suaves nos cartões respeitando o fundo original */
+div[data-testid="stExpander"], div[data-testid="stMetric"], 
+div[data-testid="stAlert"], div[data-testid="stForm"], .glass, .ind, .alerta-udp {
+  border: 1px solid rgba(25, 195, 216, 0.3) !important;
+  border-radius: 14px !important;
+}
+
+/* Botões otimizados para uso em tablet */
+.stButton > button, .stDownloadButton > button {
+  min-height: 3.5rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: 12px;
+  border: 1px solid rgba(25, 195, 216, 0.4) !important;
+  padding: 0.6rem 1.2rem;
+}
+
+.stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"] {
+  background: linear-gradient(135deg, #0083B0, #19C3D8) !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(25, 195, 216, 0.3);
+}
+
+/* Faixa de indicadores gráficos no topo */
+.barra-topo { display: flex; flex-wrap: wrap; gap: 0.7rem; margin: 0 0 1rem; }
+.ind { display: flex; align-items: center; gap: 0.7rem; padding: 0.55rem 0.95rem; min-width: 11.5rem; }
+.ind .rot { font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.8; display: block; }
+.ind b { font-size: 1.15rem; }
+
+/* ANIMAÇÃO DA GOTINHA: cai, esparrama no chão (splash) e repete em loop */
+.carregando { display: flex; align-items: center; gap: 0.9rem; padding: 0.6rem 1rem; margin: 0.4rem 0; }
 .gota-cai { animation: caiGota 1.4s cubic-bezier(.55,0,.9,.6) infinite; transform-origin: 30px 8px; }
 .onda1, .onda2 {
   fill: none;
