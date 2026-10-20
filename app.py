@@ -320,101 +320,105 @@ def obter_clique(png, chave):
     fx = c1.slider("Posição horizontal (%)", 0, 100, 50, key=chave + "x"); fy = c2.slider("Posição vertical (%)", 0, 100, 50, key=chave + "y")
     return (fx / 100, fy / 100) if st.button("Marcar este ponto", key=chave + "b") else None
 # ---------- Visual limpo e cores "Lago Cristalino" (Suporte a Modo Claro e Escuro) ----------
+# ---------- Visual Dinâmico: Modo Claro (Lago Claro) + Modo Escuro (Azul Marinho) ----------
 ESTILO_TEMA = """<style>
+/* MODO CLARO (PADRÃO): Lago Claro Cristalino */
 :root {
-  --lago-fundo: #E0F2FE;
-  --lago-painel: rgba(255, 255, 255, 0.85);
-  --lago-borda: rgba(14, 116, 144, 0.25);
-  --texto-principal: #0F172A;
-  --azul-marinho: #0284C7;
-  --turquesa: #06B6D4;
-  --vidro-forte: rgba(2, 132, 199, 0.15);
-  --sombra: 0 8px 24px rgba(0, 50, 100, 0.08);
+  --fundo-app: #E0F2FE;
+  --fundo-card: rgba(255, 255, 255, 0.85);
+  --borda-card: rgba(14, 116, 144, 0.25);
+  --texto-app: #0F172A;
+  --cor-destaque: #0083B0;
+  --cor-turquesa: #06B6D4;
 }
 
+/* MODO ESCURO: Azul Marinho Profundo (Aqua Hydro) */
 @media (prefers-color-scheme: dark) {
   :root {
-    --lago-fundo: #071B33;
-    --lago-painel: rgba(10, 46, 82, 0.75);
-    --lago-borda: rgba(56, 189, 248, 0.3);
-    --texto-principal: #E8F6FF;
-    --azul-marinho: #38BDF8;
-    --turquesa: #22D3EE;
-    --vidro-forte: rgba(255, 255, 255, 0.12);
-    --sombra: 0 10px 30px rgba(0, 10, 25, 0.35);
+    --fundo-app: #071B33;
+    --fundo-card: rgba(10, 46, 82, 0.75);
+    --borda-card: rgba(56, 189, 248, 0.3);
+    --texto-app: #E8F6FF;
+    --cor-destaque: #19C3D8;
+    --cor-turquesa: #3EE6D0;
   }
 }
 
 html, body { touch-action: manipulation; }
-.stApp { background: var(--lago-fundo) !important; color: var(--texto-principal) !important; }
+
+/* Aplicação geral */
+.stApp {
+  background-color: var(--fundo-app) !important;
+  color: var(--texto-app) !important;
+}
+
 .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6, .stApp p, .stApp label, .stApp span, .stApp div[data-testid="stMarkdownContainer"] {
-  color: var(--texto-principal) !important;
+  color: var(--texto-app) !important;
 }
 
 [data-testid="stHeader"] { background: transparent !important; }
 [data-testid="stSidebar"] {
-  background: var(--lago-painel) !important;
+  background: var(--fundo-card) !important;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-right: 1px solid var(--lago-borda) !important;
+  border-right: 1px solid var(--borda-card) !important;
 }
 
-/* Cartões, métricas e painéis em estilo Glassmorphism */
+/* Cartões, métricas e painéis */
 div[data-testid="stExpander"], div[data-testid="stMetric"], div[data-testid="stAlert"], div[data-testid="stForm"], .glass, .ind, .alerta-udp {
-  background: var(--lago-painel) !important;
-  border: 1px solid var(--lago-borda) !important;
+  background: var(--fundo-card) !important;
+  border: 1px solid var(--borda-card) !important;
   border-radius: 16px !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: var(--sombra);
-  color: var(--texto-principal) !important;
+  color: var(--texto-app) !important;
 }
 
-div[data-testid="stMetricValue"] { color: var(--turquesa) !important; }
+div[data-testid="stMetricValue"] { color: var(--cor-turquesa) !important; }
 
-/* Botões otimizados para uso em tablet */
+/* Botões interativos */
 .stButton > button, .stDownloadButton > button {
   min-height: 3.6rem;
   font-size: 1.05rem;
   font-weight: 600;
   border-radius: 12px;
-  background: var(--lago-painel) !important;
-  color: var(--texto-principal) !important;
-  border: 1px solid var(--lago-borda) !important;
+  background: var(--fundo-card) !important;
+  color: var(--texto-app) !important;
+  border: 1px solid var(--borda-card) !important;
   padding: 0.6rem 1.2rem;
 }
 
 .stButton > button:hover, .stDownloadButton > button:hover {
-  border-color: var(--turquesa) !important;
+  border-color: var(--cor-turquesa) !important;
 }
 
 .stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"] {
-  background: linear-gradient(135deg, var(--azul-marinho), var(--turquesa)) !important;
+  background: linear-gradient(135deg, var(--cor-destaque), var(--cor-turquesa)) !important;
   color: #FFFFFF !important;
   border: none !important;
-  box-shadow: 0 6px 18px rgba(2, 132, 199, 0.3);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
 }
 
 div[data-testid="stTextInput"] input, div[data-testid="stNumberInput"] input, div[data-testid="stSelectbox"] > div > div {
-  background: var(--lago-painel) !important;
-  color: var(--texto-principal) !important;
-  border: 1px solid var(--lago-borda) !important;
+  background: var(--fundo-card) !important;
+  color: var(--texto-app) !important;
   border-radius: 12px;
+  border: 1px solid var(--borda-card) !important;
   min-height: 2.9rem;
 }
 
-/* Indicadores de topo */
+/* Indicadores do topo */
 .barra-topo { display: flex; flex-wrap: wrap; gap: 0.7rem; margin: 0 0 1rem; }
 .ind { display: flex; align-items: center; gap: 0.7rem; padding: 0.55rem 0.95rem; min-width: 11.5rem; }
 .ind .rot { font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.8; display: block; }
 .ind b { font-size: 1.15rem; }
 
-/* ANIMAÇÃO DA GOTINHA: cai, esparrama no chão (splash/ondas) e repete em loop */
+/* ANIMAÇÃO DA GOTINHA: cai, esparrama no chão (splash) e repete em loop */
 .carregando { display: flex; align-items: center; gap: 0.9rem; padding: 0.6rem 1rem; margin: 0.4rem 0; }
-.gota-cai { animation: caiGota 1.4s cubic-bezier(0.55, 0, 0.9, 0.6) infinite; transform-origin: 30px 8px; }
+.gota-cai { animation: caiGota 1.4s cubic-bezier(.55,0,.9,.6) infinite; transform-origin: 30px 8px; }
 .onda1, .onda2 {
   fill: none;
-  stroke: var(--turquesa);
+  stroke: var(--cor-turquesa);
   stroke-width: 2.5;
   opacity: 0;
   transform-origin: 30px 46px;
@@ -424,18 +428,18 @@ div[data-testid="stTextInput"] input, div[data-testid="stNumberInput"] input, di
 
 @keyframes caiGota {
   0% { transform: translateY(0) scale(1); opacity: 1; }
-  50% { transform: translateY(34px) scale(0.9, 1.1); opacity: 1; }
-  60% { transform: translateY(38px) scale(1.4, 0.3); opacity: 0.8; }
-  100% { transform: translateY(40px) scale(0.1); opacity: 0; }
+  50% { transform: translateY(34px) scale(.9, 1.1); opacity: 1; }
+  60% { transform: translateY(38px) scale(1.4, .3); opacity: .8; }
+  100% { transform: translateY(40px) scale(.1); opacity: 0; }
 }
 
 @keyframes ondaSplash {
-  0%, 50% { transform: scale(0.1, 0.05); opacity: 0; }
+  0%, 50% { transform: scale(.1,.05); opacity: 0; }
   55% { opacity: 1; }
-  100% { transform: scale(1.8, 0.5); opacity: 0; }
+  100% { transform: scale(1.8,.5); opacity: 0; }
 }
 
-/* Substitui o widget de status padrão do Streamlit pela gotinha */
+/* CORREÇÃO DEFINITIVA DO VAZAMENTO DE CSS NO TOPO */
 [data-testid="stStatusWidget"] { background: transparent !important; }
 [data-testid="stStatusWidget"] > * { display: none !important; }
 [data-testid="stStatusWidget"]::after {
@@ -443,7 +447,7 @@ div[data-testid="stTextInput"] input, div[data-testid="stNumberInput"] input, di
   display: block;
   width: 52px;
   height: 52px;
-  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><style>.g{animation:c 1.4s cubic-bezier(.55,0,.9,.6) infinite;transform-origin:30px 8px}.o{fill:none;stroke:%2306B6D4;stroke-width:2.5;opacity:0;transform-origin:30px 46px;animation:o 1.4s ease-out infinite}@keyframes c{0%25{transform:translateY(0) scale(1);opacity:1}50%25{transform:translateY(34px) scale(.9,1.1);opacity:1}60%25{transform:translateY(38px) scale(1.4,.3);opacity:.8}100%25{transform:translateY(40px) scale(.1);opacity:0}}@keyframes o{0%25,50%25{transform:scale(.1,.05);opacity:0}55%25{opacity:1}100%25{transform:scale(1.8,.5);opacity:0}}</style><path class='g' d='M30 4C25 11 22 15 22 19a8 8 0 0 0 16 0c0-4-3-8-8-15z' fill='%2306B6D4'/><ellipse class='o' cx='30' cy='46' rx='16' ry='5'/></svg>") center / contain no-repeat;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><style>.g{animation:c 1.4s cubic-bezier(.55,0,.9,.6) infinite;transform-origin:30px 8px}.o{fill:none;stroke:%2319C3D8;stroke-width:2.5;opacity:0;transform-origin:30px 46px;animation:o 1.4s ease-out infinite}@keyframes c{0%{transform:translateY(0) scale(1);opacity:1}50%{transform:translateY(34px) scale(.9,1.1);opacity:1}60%{transform:translateY(38px) scale(1.4,.3);opacity:.8}100%{transform:translateY(40px) scale(.1);opacity:0}}@keyframes o{0%,50%{transform:scale(.1,.05);opacity:0}55%{opacity:1}100%{transform:scale(1.8,.5);opacity:0}}</style><path class='g' d='M30 4C25 11 22 15 22 19a8 8 0 0 0 16 0c0-4-3-8-8-15z' fill='%233EE6D0'/><ellipse class='o' cx='30' cy='46' rx='16' ry='5'/></svg>") center / contain no-repeat;
 }
 </style>"""
 
