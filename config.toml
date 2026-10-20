@@ -4,6 +4,6 @@ enableStaticServing = true
 [browser]
 gatherUsageStats = false
 
-# Permite que o Streamlit alterne automaticamente entre temas
 [theme]
 primaryColor = "#19C3D8"
+base = "dark"
