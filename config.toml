@@ -4,10 +4,6 @@ enableStaticServing = true
 [browser]
 gatherUsageStats = false
 
-# Paleta "Lago Cristalino / Aqua Hydro" (Fundo Lago Claro + Cartões Vidro + Texto Escuro)
+# Permite que o Streamlit alterne automaticamente entre temas
 [theme]
-base = "light"
-primaryColor = "#0083B0"
-backgroundColor = "#E0F2FE"
-secondaryBackgroundColor = "#FFFFFF"
-textColor = "#0F172A"
+primaryColor = "#19C3D8"
