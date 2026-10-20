@@ -1,0 +1,13 @@
+[server]
+enableStaticServing = true
+
+[browser]
+gatherUsageStats = false
+
+# Paleta "Aqua Hydro": azul marinho, ciano/turquesa e branco
+[theme]
+base = "dark"
+primaryColor = "#19C3D8"
+backgroundColor = "#071B33"
+secondaryBackgroundColor = "#0A2E52"
+textColor = "#E8F6FF"
