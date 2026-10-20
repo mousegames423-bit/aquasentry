@@ -319,75 +319,133 @@ def obter_clique(png, chave):
     c1, c2 = st.columns(2)
     fx = c1.slider("Posição horizontal (%)", 0, 100, 50, key=chave + "x"); fy = c2.slider("Posição vertical (%)", 0, 100, 50, key=chave + "y")
     return (fx / 100, fy / 100) if st.button("Marcar este ponto", key=chave + "b") else None
-
-
-# ---------- Visual limpo (sem imagem de fundo): só um cartão discreto para o painel de ambiente ----------
+# ---------- Visual limpo e cores "Lago Cristalino" (Suporte a Modo Claro e Escuro) ----------
 ESTILO_TEMA = """<style>
 :root {
-  --marinho: #071B33; --marinho-2: #0A2E52; --azul: #0B4A6B; --ciano: #19C3D8; --turquesa: #3EE6D0; --branco: #E8F6FF;
-  --vidro: rgba(255,255,255,.07); --vidro-forte: rgba(255,255,255,.12); --vidro-borda: rgba(160,225,255,.20);
-  --sombra: 0 10px 30px rgba(0,10,25,.35);
+  --lago-fundo: #E0F2FE;
+  --lago-painel: rgba(255, 255, 255, 0.85);
+  --lago-borda: rgba(14, 116, 144, 0.25);
+  --texto-principal: #0F172A;
+  --azul-marinho: #0284C7;
+  --turquesa: #06B6D4;
+  --vidro-forte: rgba(2, 132, 199, 0.15);
+  --sombra: 0 8px 24px rgba(0, 50, 100, 0.08);
 }
-html, body { touch-action: manipulation; color-scheme: dark; }
-.stApp { background: linear-gradient(160deg, var(--marinho) 0%, var(--marinho-2) 55%, var(--azul) 100%) fixed; color: var(--branco); }
-.stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp p, .stApp label, .stApp li, .stApp span, .stApp div[data-testid="stMarkdownContainer"] { color: var(--branco); }
-.stApp a { color: var(--turquesa); }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --lago-fundo: #071B33;
+    --lago-painel: rgba(10, 46, 82, 0.75);
+    --lago-borda: rgba(56, 189, 248, 0.3);
+    --texto-principal: #E8F6FF;
+    --azul-marinho: #38BDF8;
+    --turquesa: #22D3EE;
+    --vidro-forte: rgba(255, 255, 255, 0.12);
+    --sombra: 0 10px 30px rgba(0, 10, 25, 0.35);
+  }
+}
+
+html, body { touch-action: manipulation; }
+.stApp { background: var(--lago-fundo) !important; color: var(--texto-principal) !important; }
+.stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6, .stApp p, .stApp label, .stApp span, .stApp div[data-testid="stMarkdownContainer"] {
+  color: var(--texto-principal) !important;
+}
+
 [data-testid="stHeader"] { background: transparent !important; }
-[data-testid="stSidebar"] { background: var(--vidro) !important; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-  border-right: 1px solid var(--vidro-borda); }
-/* vidro: cartões, métricas, avisos, abas, tabelas */
+[data-testid="stSidebar"] {
+  background: var(--lago-painel) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-right: 1px solid var(--lago-borda) !important;
+}
+
+/* Cartões, métricas e painéis em estilo Glassmorphism */
 div[data-testid="stExpander"], div[data-testid="stMetric"], div[data-testid="stAlert"], div[data-testid="stForm"], .glass, .ind, .alerta-udp {
-  background: var(--vidro) !important; border: 1px solid var(--vidro-borda) !important; border-radius: 16px !important;
-  backdrop-filter: blur(12px) saturate(1.2); -webkit-backdrop-filter: blur(12px) saturate(1.2); box-shadow: var(--sombra); }
-div[data-testid="stMetric"] { padding: .7rem 1rem; }
-div[data-testid="stMetricValue"] { color: var(--turquesa); }
-/* botões grandes (tablet à beira do lago) */
-.stButton > button, .stDownloadButton > button { min-height: 3.7rem; font-size: 1.1rem; font-weight: 600; border-radius: 14px;
-  background: var(--vidro-forte); color: var(--branco); border: 1px solid var(--vidro-borda); padding: .6rem 1.2rem; }
-.stButton > button:hover, .stDownloadButton > button:hover { border-color: var(--ciano); color: #fff; }
+  background: var(--lago-painel) !important;
+  border: 1px solid var(--lago-borda) !important;
+  border-radius: 16px !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--sombra);
+  color: var(--texto-principal) !important;
+}
+
+div[data-testid="stMetricValue"] { color: var(--turquesa) !important; }
+
+/* Botões otimizados para uso em tablet */
+.stButton > button, .stDownloadButton > button {
+  min-height: 3.6rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: 12px;
+  background: var(--lago-painel) !important;
+  color: var(--texto-principal) !important;
+  border: 1px solid var(--lago-borda) !important;
+  padding: 0.6rem 1.2rem;
+}
+
+.stButton > button:hover, .stDownloadButton > button:hover {
+  border-color: var(--turquesa) !important;
+}
+
 .stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"] {
-  background: linear-gradient(135deg, var(--ciano), var(--turquesa)); color: #05233D; border: 0; box-shadow: 0 6px 18px rgba(25,195,216,.35); }
-.stButton > button:disabled { opacity: .45; }
-div[data-testid="stRadio"] label { padding: .55rem .3rem; font-size: 1.05rem; }
-div[data-testid="stSlider"] { padding: .7rem .4rem; }
+  background: linear-gradient(135deg, var(--azul-marinho), var(--turquesa)) !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  box-shadow: 0 6px 18px rgba(2, 132, 199, 0.3);
+}
+
 div[data-testid="stTextInput"] input, div[data-testid="stNumberInput"] input, div[data-testid="stSelectbox"] > div > div {
-  background: rgba(255,255,255,.08) !important; color: var(--branco) !important; border-radius: 12px; min-height: 2.9rem; }
-/* ícones e peças em SVG/CSS */
-.ic { display: inline-block; vertical-align: -4px; flex: none; }
-.chip { display: flex; align-items: center; gap: .5rem; padding: .25rem 0; font-size: .95rem; opacity: .95; word-break: break-all; }
-.barra-topo { display: flex; flex-wrap: wrap; gap: .7rem; margin: 0 0 1rem; }
-.ind { display: flex; align-items: center; gap: .7rem; padding: .55rem .95rem; min-width: 11.5rem; }
-.ind .rot { font-size: .75rem; letter-spacing: .04em; text-transform: uppercase; opacity: .7; display: block; }
+  background: var(--lago-painel) !important;
+  color: var(--texto-principal) !important;
+  border: 1px solid var(--lago-borda) !important;
+  border-radius: 12px;
+  min-height: 2.9rem;
+}
+
+/* Indicadores de topo */
+.barra-topo { display: flex; flex-wrap: wrap; gap: 0.7rem; margin: 0 0 1rem; }
+.ind { display: flex; align-items: center; gap: 0.7rem; padding: 0.55rem 0.95rem; min-width: 11.5rem; }
+.ind .rot { font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.8; display: block; }
 .ind b { font-size: 1.15rem; }
-.ind.ok svg { color: var(--turquesa); } .ind.ok b { color: var(--turquesa); }
-.ind.aviso svg, .ind.aviso b { color: #FFD166; } .ind.ruim svg, .ind.ruim b { color: #FF6B6B; } .ind.neutro svg { color: #8FB3CC; }
-.alerta-udp { display: flex; align-items: center; gap: .8rem; padding: .8rem 1.1rem; margin: .4rem 0 1rem; border-color: rgba(255,209,102,.55) !important;
-  background: rgba(255,209,102,.10) !important; }
-.alerta-udp.grave { border-color: rgba(255,107,107,.6) !important; background: rgba(255,107,107,.10) !important; }
-.alerta-udp .ponto { width: 14px; height: 14px; border-radius: 50%; background: #FFD166; animation: pulso 1.2s ease-in-out infinite; flex: none; }
-.alerta-udp.grave .ponto { background: #FF6B6B; }
-@keyframes pulso { 0% { box-shadow: 0 0 0 0 rgba(255,209,102,.7); } 70% { box-shadow: 0 0 0 12px rgba(255,209,102,0); } 100% { box-shadow: 0 0 0 0 rgba(255,209,102,0); } }
-.glass { padding: .9rem 1.1rem; margin: .3rem 0 .9rem; }
-.glass h4 { margin: 0 0 .6rem; display: flex; align-items: center; gap: .5rem; }
-.glass .linha { display: flex; justify-content: space-between; gap: 1rem; padding: .2rem 0; border-bottom: 1px dashed var(--vidro-borda); }
-.glass .linha:last-child { border-bottom: 0; }
-.glass .faixa { height: 12px; border-radius: 6px; background: linear-gradient(90deg, var(--ciano), var(--turquesa)); margin: .3rem 0 .15rem; }
-.glass .margem { height: 12px; border-radius: 6px; background: repeating-linear-gradient(45deg, #2E8B6A, #2E8B6A 6px, #4FB38D 6px, #4FB38D 12px); margin: .3rem 0 .15rem; }
-/* carregamento: gotinha que cai e faz ondas (substitui o indicador padrão do Streamlit) */
-.carregando { display: flex; align-items: center; gap: .9rem; padding: .6rem 1rem; margin: .4rem 0; }
-.carregando svg { overflow: visible; }
-.gota-cai { animation: cai 1.4s cubic-bezier(.55,0,.9,.6) infinite; transform-origin: 30px 8px; }
-.onda1, .onda2 { fill: none; stroke: var(--ciano); stroke-width: 2; opacity: 0; transform-origin: 30px 46px; }
-.onda1 { animation: onda 1.4s ease-out infinite; } .onda2 { animation: onda 1.4s ease-out .22s infinite; }
-@keyframes cai { 0% { transform: translateY(0) scale(1); opacity: 1; } 55% { transform: translateY(36px) scale(.9,1.1); opacity: 1; } 62% { transform: translateY(40px) scale(.3); opacity: 0; } 100% { opacity: 0; } }
-@keyframes onda { 0%, 55% { transform: scale(.1,.05); opacity: 0; } 60% { opacity: .9; } 100% { transform: scale(1.6,.5); opacity: 0; } }
+
+/* ANIMAÇÃO DA GOTINHA: cai, esparrama no chão (splash/ondas) e repete em loop */
+.carregando { display: flex; align-items: center; gap: 0.9rem; padding: 0.6rem 1rem; margin: 0.4rem 0; }
+.gota-cai { animation: caiGota 1.4s cubic-bezier(0.55, 0, 0.9, 0.6) infinite; transform-origin: 30px 8px; }
+.onda1, .onda2 {
+  fill: none;
+  stroke: var(--turquesa);
+  stroke-width: 2.5;
+  opacity: 0;
+  transform-origin: 30px 46px;
+}
+.onda1 { animation: ondaSplash 1.4s ease-out infinite; }
+.onda2 { animation: ondaSplash 1.4s ease-out 0.22s infinite; }
+
+@keyframes caiGota {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  50% { transform: translateY(34px) scale(0.9, 1.1); opacity: 1; }
+  60% { transform: translateY(38px) scale(1.4, 0.3); opacity: 0.8; }
+  100% { transform: translateY(40px) scale(0.1); opacity: 0; }
+}
+
+@keyframes ondaSplash {
+  0%, 50% { transform: scale(0.1, 0.05); opacity: 0; }
+  55% { opacity: 1; }
+  100% { transform: scale(1.8, 0.5); opacity: 0; }
+}
+
+/* Substitui o widget de status padrão do Streamlit pela gotinha */
 [data-testid="stStatusWidget"] { background: transparent !important; }
 [data-testid="stStatusWidget"] > * { display: none !important; }
-[data-testid="stStatusWidget"]::after { content: ""; display: block; width: 52px; height: 52px; background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><style>.g{animation:c 1.4s cubic-bezier(.55,0,.9,.6) infinite;transform-origin:30px 8px}.o{fill:none;stroke:%2319C3D8;stroke-width:2;opacity:0;transform-origin:30px 46px;animation:o 1.4s ease-out infinite}@keyframes c{0%25{transform:translateY(0) scale(1);opacity:1}55%25{transform:translateY(34px) scale(.9,1.1);opacity:1}62%25{transform:translateY(38px) scale(.3);opacity:0}100%25{opacity:0}}@keyframes o{0%25,55%25{transform:scale(.1,.05);opacity:0}60%25{opacity:.9}100%25{transform:scale(1.6,.5);opacity:0}}</style><path class='g' d='M30 4C25 11 22 15 22 19a8 8 0 0 0 16 0c0-4-3-8-8-15z' fill='%233EE6D0'/><ellipse class='o' cx='30' cy='46' rx='16' ry='5'/></svg>") center / contain no-repeat; }
-.barra-nota { height: 12px; border-radius: 6px; background: rgba(255,255,255,.12); overflow: hidden; margin: .25rem 0 .6rem; }
-.barra-nota > i { display: block; height: 100%; background: linear-gradient(90deg, var(--ciano), var(--turquesa)); border-radius: 6px; }
+[data-testid="stStatusWidget"]::after {
+  content: "";
+  display: block;
+  width: 52px;
+  height: 52px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><style>.g{animation:c 1.4s cubic-bezier(.55,0,.9,.6) infinite;transform-origin:30px 8px}.o{fill:none;stroke:%2306B6D4;stroke-width:2.5;opacity:0;transform-origin:30px 46px;animation:o 1.4s ease-out infinite}@keyframes c{0%25{transform:translateY(0) scale(1);opacity:1}50%25{transform:translateY(34px) scale(.9,1.1);opacity:1}60%25{transform:translateY(38px) scale(1.4,.3);opacity:.8}100%25{transform:translateY(40px) scale(.1);opacity:0}}@keyframes o{0%25,50%25{transform:scale(.1,.05);opacity:0}55%25{opacity:1}100%25{transform:scale(1.8,.5);opacity:0}}</style><path class='g' d='M30 4C25 11 22 15 22 19a8 8 0 0 0 16 0c0-4-3-8-8-15z' fill='%2306B6D4'/><ellipse class='o' cx='30' cy='46' rx='16' ry='5'/></svg>") center / contain no-repeat;
+}
 </style>"""
-
 
 def area_m2(anel_ll):
     """Área de um contorno (lat, lon) em m² (fórmula do cadarço no plano local)."""
