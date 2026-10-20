@@ -324,36 +324,27 @@ def obter_clique(png, chave):
 # ---------- Visual Blindado: Suporte Real a Modo Claro e Escuro ----------
 # ---------- Estilo Padrão Limpo (Mantém Fundos Nativos + Desenhos & Gotinha) ----------
 # ---------- Estilo Nativo (Sem cores forçadas + Desenhos & Gotinha) ----------
+# ---------- Visual Nativo Limpo com Gotinha no Status Topo (Substitui o bonequinho) ----------
 ESTILO_TEMA = """<style>
 html, body { touch-action: manipulation; }
 
-/* Esconde o widget nativo para eliminar o erro de texto bruto no topo */
+/* Substitui o indicador de status do topo (pessoinha/engrenagem) pela gotinha animada escura */
 [data-testid="stStatusWidget"] {
+  background: transparent !important;
+  visibility: visible !important;
+}
+
+[data-testid="stStatusWidget"] > * {
   display: none !important;
 }
 
-/* Bordas suaves nos cartões respeitando o fundo original */
-div[data-testid="stExpander"], div[data-testid="stMetric"], 
-div[data-testid="stAlert"], div[data-testid="stForm"], .glass, .ind, .alerta-udp {
-  border: 1px solid rgba(25, 195, 216, 0.3) !important;
-  border-radius: 14px !important;
-}
-
-/* Botões otimizados para uso em tablet */
-.stButton > button, .stDownloadButton > button {
-  min-height: 3.5rem;
-  font-size: 1.05rem;
-  font-weight: 600;
-  border-radius: 12px;
-  border: 1px solid rgba(25, 195, 216, 0.4) !important;
-  padding: 0.6rem 1.2rem;
-}
-
-.stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"] {
-  background: linear-gradient(135deg, #0083B0, #19C3D8) !important;
-  color: #FFFFFF !important;
-  border: none !important;
-  box-shadow: 0 4px 12px rgba(25, 195, 216, 0.3);
+[data-testid="stStatusWidget"]::after {
+  content: "";
+  display: block;
+  width: 38px;
+  height: 38px;
+  margin-top: 4px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><style>.g{animation:c 1.4s cubic-bezier(.55,0,.9,.6) infinite;transform-origin:30px 8px}.o{fill:none;stroke:%230B4A6B;stroke-width:3;opacity:0;transform-origin:30px 46px;animation:o 1.4s ease-out infinite}@keyframes c{0%{transform:translateY(0) scale(1);opacity:1}50%{transform:translateY(34px) scale(.9,1.1);opacity:1}60%{transform:translateY(38px) scale(1.4,.3);opacity:.8}100%{transform:translateY(40px) scale(.1);opacity:0}}@keyframes o{0%,50%{transform:scale(.1,.05);opacity:0}55%{opacity:1}100%{transform:scale(1.8,.5);opacity:0}}</style><path class='g' d='M30 4C25 11 22 15 22 19a8 8 0 0 0 16 0c0-4-3-8-8-15z' fill='%230B4A6B'/><ellipse class='o' cx='30' cy='46' rx='16' ry='5'/></svg>") center / contain no-repeat;
 }
 
 /* Faixa de indicadores gráficos no topo */
@@ -362,12 +353,12 @@ div[data-testid="stAlert"], div[data-testid="stForm"], .glass, .ind, .alerta-udp
 .ind .rot { font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.8; display: block; }
 .ind b { font-size: 1.15rem; }
 
-/* ANIMAÇÃO DA GOTINHA: cai, esparrama no chão (splash) e repete em loop */
+/* ANIMAÇÃO DA GOTINHA EM BLOCOS DE CARREGAMENTO */
 .carregando { display: flex; align-items: center; gap: 0.9rem; padding: 0.6rem 1rem; margin: 0.4rem 0; }
 .gota-cai { animation: caiGota 1.4s cubic-bezier(.55,0,.9,.6) infinite; transform-origin: 30px 8px; }
 .onda1, .onda2 {
   fill: none;
-  stroke: #19C3D8;
+  stroke: #0B4A6B;
   stroke-width: 2.5;
   opacity: 0;
   transform-origin: 30px 46px;
