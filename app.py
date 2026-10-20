@@ -321,110 +321,87 @@ def obter_clique(png, chave):
     return (fx / 100, fy / 100) if st.button("Marcar este ponto", key=chave + "b") else None
 # ---------- Visual limpo e cores "Lago Cristalino" (Suporte a Modo Claro e Escuro) ----------
 # ---------- Visual Dinâmico: Modo Claro (Lago Claro) + Modo Escuro (Azul Marinho) ----------
+# ---------- Visual Blindado: Suporte Real a Modo Claro e Escuro ----------
 ESTILO_TEMA = """<style>
-/* MODO CLARO (PADRÃO): Lago Claro Cristalino */
-:root {
-  --fundo-app: #E0F2FE;
-  --fundo-card: rgba(255, 255, 255, 0.85);
-  --borda-card: rgba(14, 116, 144, 0.25);
-  --texto-app: #0F172A;
-  --cor-destaque: #0083B0;
-  --cor-turquesa: #06B6D4;
+/* MODO CLARO (Lago Cristalino) */
+.stApp, [data-theme="light"] .stApp {
+  background-color: #E0F2FE !important;
+  color: #0F172A !important;
 }
 
-/* MODO ESCURO: Azul Marinho Profundo (Aqua Hydro) */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --fundo-app: #071B33;
-    --fundo-card: rgba(10, 46, 82, 0.75);
-    --borda-card: rgba(56, 189, 248, 0.3);
-    --texto-app: #E8F6FF;
-    --cor-destaque: #19C3D8;
-    --cor-turquesa: #3EE6D0;
-  }
+[data-theme="light"] .stApp h1, [data-theme="light"] .stApp h2, [data-theme="light"] .stApp h3, 
+[data-theme="light"] .stApp h4, [data-theme="light"] .stApp p, [data-theme="light"] .stApp label, 
+[data-theme="light"] .stApp span, [data-theme="light"] div[data-testid="stMarkdownContainer"] {
+  color: #0F172A !important;
 }
 
-html, body { touch-action: manipulation; }
-
-/* Aplicação geral */
-.stApp {
-  background-color: var(--fundo-app) !important;
-  color: var(--texto-app) !important;
-}
-
-.stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6, .stApp p, .stApp label, .stApp span, .stApp div[data-testid="stMarkdownContainer"] {
-  color: var(--texto-app) !important;
-}
-
-[data-testid="stHeader"] { background: transparent !important; }
-[data-testid="stSidebar"] {
-  background: var(--fundo-card) !important;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-right: 1px solid var(--borda-card) !important;
-}
-
-/* Cartões, métricas e painéis */
-div[data-testid="stExpander"], div[data-testid="stMetric"], div[data-testid="stAlert"], div[data-testid="stForm"], .glass, .ind, .alerta-udp {
-  background: var(--fundo-card) !important;
-  border: 1px solid var(--borda-card) !important;
+[data-theme="light"] div[data-testid="stExpander"], [data-theme="light"] div[data-testid="stMetric"], 
+[data-theme="light"] div[data-testid="stAlert"], [data-theme="light"] div[data-testid="stForm"], 
+[data-theme="light"] .glass, [data-theme="light"] .ind, [data-theme="light"] .alerta-udp {
+  background: rgba(255, 255, 255, 0.88) !important;
+  border: 1px solid rgba(14, 116, 144, 0.25) !important;
   border-radius: 16px !important;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  color: var(--texto-app) !important;
+  color: #0F172A !important;
 }
 
-div[data-testid="stMetricValue"] { color: var(--cor-turquesa) !important; }
-
-/* Botões interativos */
-.stButton > button, .stDownloadButton > button {
-  min-height: 3.6rem;
-  font-size: 1.05rem;
-  font-weight: 600;
-  border-radius: 12px;
-  background: var(--fundo-card) !important;
-  color: var(--texto-app) !important;
-  border: 1px solid var(--borda-card) !important;
-  padding: 0.6rem 1.2rem;
+[data-theme="light"] .stButton > button, [data-theme="light"] .stDownloadButton > button {
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+  border: 1px solid rgba(14, 116, 144, 0.3) !important;
 }
 
-.stButton > button:hover, .stDownloadButton > button:hover {
-  border-color: var(--cor-turquesa) !important;
+/* MODO ESCURO (Azul Marinho / Aqua Hydro) */
+[data-theme="dark"] .stApp {
+  background: linear-gradient(160deg, #071B33 0%, #0A2E52 55%, #0B4A6B 100%) fixed !important;
+  color: #E8F6FF !important;
 }
 
+[data-theme="dark"] .stApp h1, [data-theme="dark"] .stApp h2, [data-theme="dark"] .stApp h3, 
+[data-theme="dark"] .stApp h4, [data-theme="dark"] .stApp p, [data-theme="dark"] .stApp label, 
+[data-theme="dark"] .stApp span, [data-theme="dark"] div[data-testid="stMarkdownContainer"] {
+  color: #E8F6FF !important;
+}
+
+[data-theme="dark"] div[data-testid="stExpander"], [data-theme="dark"] div[data-testid="stMetric"], 
+[data-theme="dark"] div[data-testid="stAlert"], [data-theme="dark"] div[data-testid="stForm"], 
+[data-theme="dark"] .glass, [data-theme="dark"] .ind, [data-theme="dark"] .alerta-udp {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid rgba(160, 225, 255, 0.22) !important;
+  border-radius: 16px !important;
+  color: #E8F6FF !important;
+}
+
+[data-theme="dark"] .stButton > button, [data-theme="dark"] .stDownloadButton > button {
+  background: rgba(255, 255, 255, 0.14) !important;
+  color: #E8F6FF !important;
+  border: 1px solid rgba(160, 225, 255, 0.22) !important;
+}
+
+/* BOTÃO PRINCIPAL (Destaque em ambos os modos) */
 .stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"] {
-  background: linear-gradient(135deg, var(--cor-destaque), var(--cor-turquesa)) !important;
-  color: #FFFFFF !important;
+  background: linear-gradient(135deg, #19C3D8, #3EE6D0) !important;
+  color: #05233D !important;
+  font-weight: bold !important;
   border: none !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
 }
 
-div[data-testid="stTextInput"] input, div[data-testid="stNumberInput"] input, div[data-testid="stSelectbox"] > div > div {
-  background: var(--fundo-card) !important;
-  color: var(--texto-app) !important;
-  border-radius: 12px;
-  border: 1px solid var(--borda-card) !important;
-  min-height: 2.9rem;
+/* REGRA DE SEGURANÇA: REMOVE DEFINITIVAMENTE O TEXTO VAZADO NO TOPO */
+[data-testid="stStatusWidget"] {
+  display: none !important;
 }
 
-/* Indicadores do topo */
-.barra-topo { display: flex; flex-wrap: wrap; gap: 0.7rem; margin: 0 0 1rem; }
-.ind { display: flex; align-items: center; gap: 0.7rem; padding: 0.55rem 0.95rem; min-width: 11.5rem; }
-.ind .rot { font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.8; display: block; }
-.ind b { font-size: 1.15rem; }
-
-/* ANIMAÇÃO DA GOTINHA: cai, esparrama no chão (splash) e repete em loop */
-.carregando { display: flex; align-items: center; gap: 0.9rem; padding: 0.6rem 1rem; margin: 0.4rem 0; }
+/* ANIMAÇÃO CUSTOMIZADA DA GOTINHA EM LOOP */
+.carregando { display: flex; align-items: center; gap: .9rem; padding: .6rem 1rem; margin: .4rem 0; }
 .gota-cai { animation: caiGota 1.4s cubic-bezier(.55,0,.9,.6) infinite; transform-origin: 30px 8px; }
 .onda1, .onda2 {
   fill: none;
-  stroke: var(--cor-turquesa);
+  stroke: #19C3D8;
   stroke-width: 2.5;
   opacity: 0;
   transform-origin: 30px 46px;
 }
 .onda1 { animation: ondaSplash 1.4s ease-out infinite; }
-.onda2 { animation: ondaSplash 1.4s ease-out 0.22s infinite; }
+.onda2 { animation: ondaSplash 1.4s ease-out .22s infinite; }
 
 @keyframes caiGota {
   0% { transform: translateY(0) scale(1); opacity: 1; }
@@ -438,19 +415,7 @@ div[data-testid="stTextInput"] input, div[data-testid="stNumberInput"] input, di
   55% { opacity: 1; }
   100% { transform: scale(1.8,.5); opacity: 0; }
 }
-
-/* CORREÇÃO DEFINITIVA DO VAZAMENTO DE CSS NO TOPO */
-[data-testid="stStatusWidget"] { background: transparent !important; }
-[data-testid="stStatusWidget"] > * { display: none !important; }
-[data-testid="stStatusWidget"]::after {
-  content: "";
-  display: block;
-  width: 52px;
-  height: 52px;
-  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><style>.g{animation:c 1.4s cubic-bezier(.55,0,.9,.6) infinite;transform-origin:30px 8px}.o{fill:none;stroke:%2319C3D8;stroke-width:2.5;opacity:0;transform-origin:30px 46px;animation:o 1.4s ease-out infinite}@keyframes c{0%{transform:translateY(0) scale(1);opacity:1}50%{transform:translateY(34px) scale(.9,1.1);opacity:1}60%{transform:translateY(38px) scale(1.4,.3);opacity:.8}100%{transform:translateY(40px) scale(.1);opacity:0}}@keyframes o{0%,50%{transform:scale(.1,.05);opacity:0}55%{opacity:1}100%{transform:scale(1.8,.5);opacity:0}}</style><path class='g' d='M30 4C25 11 22 15 22 19a8 8 0 0 0 16 0c0-4-3-8-8-15z' fill='%233EE6D0'/><ellipse class='o' cx='30' cy='46' rx='16' ry='5'/></svg>") center / contain no-repeat;
-}
 </style>"""
-
 def area_m2(anel_ll):
     """Área de um contorno (lat, lon) em m² (fórmula do cadarço no plano local)."""
     if not anel_ll or len(anel_ll) < 3: return 0.0
